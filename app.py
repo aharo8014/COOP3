@@ -1065,7 +1065,9 @@ def tab_chi2(df: pd.DataFrame):
     for _, r in df_chi.iterrows():
         cv_mat.loc[r["Variable 1"], r["Variable 2"]] = r["Cramér V"]
         cv_mat.loc[r["Variable 2"], r["Variable 1"]] = r["Cramér V"]
-    np.fill_diagonal(cv_mat.values, 1.0)
+    arr = cv_mat.to_numpy(copy=True)
+    np.fill_diagonal(arr, 1.0)
+    cv_mat = pd.DataFrame(arr, index=cv_mat.index, columns=cv_mat.columns)
 
     short = {c: c.replace("RANGO ","").replace(" CONCEDIDO","").replace(" CONCESION","")
                  .replace("DESTINO FINANCIERO","DESTINO").replace("INSTRUCCION","INSTRUC.")
